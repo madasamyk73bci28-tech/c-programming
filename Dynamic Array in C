@@ -1,0 +1,46 @@
+include <stdio.h>
+#include <stdlib.h>
+
+/*
+ * This stores the total number of books in each shelf.
+ */
+int* total_number_of_books;
+
+/*
+ * This stores the total number of pages in each book of each shelf.
+ * The rows represent the shelves and the columns represent the books.
+ */
+int** total_number_of_pages;
+
+int main()
+{
+    int total_number_of_shelves;
+    if (scanf("%d", &total_number_of_shelves) != 1) return 1;
+    
+    int total_number_of_queries;
+    if (scanf("%d", &total_number_of_queries) != 1) return 1;
+    
+    // RESTORED: Memory allocation for tracking books and shelves
+    total_number_of_books = (int *)calloc(total_number_of_shelves, sizeof(int));
+    total_number_of_pages = (int **)calloc(total_number_of_shelves, sizeof(int*));
+    
+    while (total_number_of_queries--) {
+        int type_of_query;
+        if (scanf("%d", &type_of_query) != 1) break;
+        
+        if (type_of_query == 1) {
+            int x, y;
+            scanf("%d %d", &x, &y);
+            
+            // ADDED: Increment book count for shelf x using pointer notation
+            *(total_number_of_books + x) += 1;
+            
+            // ADDED: Resize the book array for shelf x using realloc
+            int current_books = *(total_number_of_books + x);
+            *(total_number_of_pages + x) = (int *)realloc(*(total_number_of_pages + x), current_books * sizeof(int));
+            
+            // ADDED: Store the page count 'y' into the newly added book slot
+            *(*(total_number_of_pages + x) + (current_books - 1)) = y;
+
+
+        } else if (type_
