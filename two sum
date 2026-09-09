@@ -1,0 +1,58 @@
+ #include <stdio.h>
+#include <stdlib.h>
+struct HashNode 
+{
+    int key;
+    int value;
+    struct HashNode* next;
+};
+int getHashIndex(int key, int size) 
+{
+    long long absKey = key < 0 ? -(long long)key : key;
+    return absKey % size;
+}
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) 
+{
+    int hashSize = numsSize * 2; 
+    struct HashNode** hashTable = (struct HashNode**)calloc(hashSize, sizeof(struct HashNode*));
+    
+    int* result = (int*)malloc(2 * sizeof(int));
+    *returnSize = 2;
+
+    for (int i = 0; i < numsSize; i++) 
+    {
+        int complement = target - nums[i];
+        int compHashIndex = getHashIndex(complement, hashSize);
+        struct HashNode* curr = hashTable[compHashIndex];
+        while (curr != NULL) 
+        {
+            if (curr->key == complement) 
+            {
+                result[0] = curr->value;
+                result[1] = i;
+                for (int j = 0; j < hashSize; j++) 
+                {
+                    struct HashNode* node = hashTable[j];
+                    while (node != NULL) 
+                    {
+                        struct HashNode* temp = node;
+                        node = node->next;
+                        free(temp);
+                    }
+                }
+                free(hashTable);
+                return result;
+            }
+            curr = curr->next;
+        }
+        int currentHashIndex = getHashIndex(nums[i], hashSize);
+        struct HashNode* newNode = (struct HashNode*)malloc(sizeof(struct HashNode));
+        newNode->key = nums[i];
+        newNode->value = i;
+        newNode->next = hashTable[currentHashIndex];
+        hashTable[currentHashIndex] = newNode;
+    }
+    free(hashTable);
+    *returnSize = 0;
+    return NULL;
+}
