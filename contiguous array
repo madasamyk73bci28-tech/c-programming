@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+int findMaxLength(int* nums, int numsSize) 
+{
+    int mapSize = 2 * numsSize + 1;
+    int* map = (int*)malloc(mapSize * sizeof(int));
+    for (int i = 0; i < mapSize; i++) 
+    {
+        map[i] = -2;
+    }
+    
+    int maxLen = 0;
+    int currentSum = 0;
+    map[0 + numsSize] = -1;
+    
+    for (int i = 0; i < numsSize; i++) 
+    {
+        currentSum += (nums[i] == 0) ? -1 : 1;
+        int mapIndex = currentSum + numsSize;
+        if (map[mapIndex] != -2) 
+        {
+            int len = i - map[mapIndex];
+            maxLen = MAX(maxLen, len);
+        } else 
+        {
+            map[mapIndex] = i;
+        }
+    }
+    
+    free(map);
+    return maxLen;
+}
