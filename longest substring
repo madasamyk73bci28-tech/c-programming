@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+int lengthOfLongestSubstring(char* s) 
+{
+    int lastSeen[128];
+    memset(lastSeen, -1, sizeof(lastSeen));
+    int maxLength = 0;
+    int left = 0;  
+    for (int right = 0; s[right] != '\0'; right++) 
+    {
+        unsigned char currentChar = s[right];
+        if (lastSeen[currentChar] >= left) 
+        {
+            left = lastSeen[currentChar] + 1;
+        }
+        lastSeen[currentChar] = right;
+        maxLength = MAX(maxLength, right - left + 1);
+    } 
+    return maxLength;
+}
