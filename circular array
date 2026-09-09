@@ -1,0 +1,11 @@
+#include <stdbool.h>
+#include <stdlib.h>
+int getNextIndex(int* nums, int numsSize, int i) 
+{
+    int next = (i + nums[i]) % numsSize;
+    if (next < 0) 
+    {
+        next += numsSize; 
+    }
+    return next;
+}
