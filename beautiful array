@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+int* beautifulArray(int n, int* returnSize) 
+{
+    *returnSize = n;
+    int* ans = (int*)malloc(n * sizeof(int));
+    ans[0] = 1;
+    int current_size = 1;
+    while (current_size < n) 
+    {
+        int* temp = (int*)malloc(n * sizeof(int));
+        int index = 0;
+        for (int i = 0; i < current_size; i++) 
+        {
+            if (2 * ans[i] - 1 <= n) {
+                temp[index++] = 2 * ans[i] - 1;
+            }
+        }
+        for (int i = 0; i < current_size; i++) 
+        {
+            if (2 * ans[i] <= n) {
+                temp[index++] = 2 * ans[i];
+            }
+        }
+        free(ans);
+        ans = temp;
+        current_size = index;
+    }
+    
+    return ans;
+}
